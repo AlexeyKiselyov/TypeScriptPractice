@@ -7,3 +7,56 @@ function add(num1, num2) {
 button.addEventListener("click", function () {
     console.log(add(+input1.value, +input2.value));
 });
+//Practic with types
+// 1. Задайте правильные ts типы, для классических js;
+var age;
+age = 50;
+var names;
+names = "Max";
+var toggle;
+toggle = true;
+var empty;
+empty = null;
+var notInitialize;
+notInitialize = undefined;
+var callback;
+callback = function (a) {
+    return 100 + a;
+};
+console.log(callback(50));
+function foo(c, func) {
+    return func(c);
+}
+function func(c) {
+    return c + 50;
+}
+console.log(foo(50, func));
+// Задавайте тип для переменной в которую можно сохранить любое значение.
+var anything;
+anything = -20;
+anything = "Text";
+anything = {};
+console.log(anything);
+// Исправьте код с переменной unknown, чтобы в него можно было сохранить переменную с текстом.
+var some;
+some = "Text";
+var str;
+if (typeof some === "string") {
+    str = some;
+}
+// Сделайте неизменяемый массив со строго описанными типами. Массив для примера.
+var person;
+person = ['Max', 21];
+// Опишите enum условие следующее, он должен отображать статус загрузки. Загружается (LOADING) и загружена (READY).
+var Loading;
+(function (Loading) {
+    Loading[Loading["LOADING"] = 0] = "LOADING";
+    Loading[Loading["READY"] = 1] = "READY";
+})(Loading || (Loading = {}));
+;
+var service = {
+    isLoading: Loading.LOADING,
+};
+if (service.isLoading === Loading.LOADING) {
+    console.log('Loading...');
+}
