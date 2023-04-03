@@ -66,17 +66,79 @@ if (typeof some === "string") {
 
 // Сделайте неизменяемый массив со строго описанными типами. Массив для примера.
 
-let person:[string, number];
-person = ['Max', 21];
+let person: [string, number];
+person = ["Max", 21];
 
 // Опишите enum условие следующее, он должен отображать статус загрузки. Загружается (LOADING) и загружена (READY).
 
-enum Loading {LOADING, READY};
+enum Loading {
+  LOADING,
+  READY,
+}
 
 const service = {
   isLoading: Loading.LOADING,
+};
+
+if (service.isLoading === Loading.LOADING) {
+  console.log("Loading...");
 }
 
-if( service.isLoading===Loading.LOADING){
-  console.log('Loading...');
+// Сделайте переменную, которая может принимать или строку или число.
+
+let a: string | number;
+a = 3;
+a = "string";
+
+// Сделайте переменную, которая может принимать только одно значение из двух 'enable' или 'disable'
+
+let b: "enable" | "disable";
+b = "enable";
+b = "disable";
+
+// Укажите типы для следующих функций
+
+function showMessage(message: string): void {
+  console.log(message);
 }
+
+function calc(num1: number, num2: number): number {
+  return num1 + num2;
+}
+
+function customError(): never {
+  throw new Error("Error");
+}
+
+// Создайте свой тип данных на основе имеющихся данных.
+
+type pageType = {
+  title: string;
+  likes: number;
+  accounts: string[];
+  status: "open" | "close";
+  details?: {
+    createAt: Date;
+    updateAt: string;
+  };
+};
+
+const date = new Date("2021-01-01");
+
+const page1: pageType = {
+  title: "The awesome page",
+  likes: 100,
+  accounts: ["Max", "Anton", "Nikita"],
+  status: "open",
+  details: {
+    createAt: date,
+    updateAt: "2021-05-01",
+  },
+};
+
+const page2: pageType = {
+  title: "Python or Js",
+  likes: 5,
+  accounts: ["Alex"],
+  status: "close",
+};

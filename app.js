@@ -46,17 +46,52 @@ if (typeof some === "string") {
 }
 // Сделайте неизменяемый массив со строго описанными типами. Массив для примера.
 var person;
-person = ['Max', 21];
+person = ["Max", 21];
 // Опишите enum условие следующее, он должен отображать статус загрузки. Загружается (LOADING) и загружена (READY).
 var Loading;
 (function (Loading) {
     Loading[Loading["LOADING"] = 0] = "LOADING";
     Loading[Loading["READY"] = 1] = "READY";
 })(Loading || (Loading = {}));
-;
 var service = {
     isLoading: Loading.LOADING,
 };
 if (service.isLoading === Loading.LOADING) {
-    console.log('Loading...');
+    console.log("Loading...");
 }
+// Сделайте переменную, которая может принимать или строку или число.
+var a;
+a = 3;
+a = "string";
+// Сделайте переменную, которая может принимать только одно значение из двух 'enable' или 'disable'
+var b;
+b = "enable";
+b = "disable";
+// Укажите типы для следующих функций
+function showMessage(message) {
+    console.log(message);
+}
+function calc(num1, num2) {
+    return num1 + num2;
+}
+function customError() {
+    throw new Error("Error");
+}
+var date = new Date("2021-01-01");
+console.log(date);
+var page1 = {
+    title: "The awesome page",
+    likes: 100,
+    accounts: ["Max", "Anton", "Nikita"],
+    status: "open",
+    details: {
+        createAt: "2021-01-01",
+        updateAt: "2021-05-01",
+    },
+};
+var page2 = {
+    title: "Python or Js",
+    likes: 5,
+    accounts: ["Alex"],
+    status: "close",
+};
