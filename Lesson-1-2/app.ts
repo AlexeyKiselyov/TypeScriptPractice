@@ -29,10 +29,16 @@ empty = null;
 let notInitialize: undefined;
 notInitialize = undefined;
 
+// first option
 let callback: (a: number) => number;
 callback = (a) => {
   return 100 + a;
 };
+
+// second option
+// const callback = (a: number): number => {
+//   return 100 + a;
+// };
 console.log(callback(50));
 
 function foo(c: number, func: (d: number) => number): number {
@@ -71,17 +77,21 @@ person = ["Max", 21];
 
 // Опишите enum условие следующее, он должен отображать статус загрузки. Загружается (LOADING) и загружена (READY).
 
-enum Loading {
+enum LoadingStatus {
   LOADING,
   READY,
 }
 
-const service = {
-  isLoading: Loading.LOADING,
+const book = {
+  load: LoadingStatus.LOADING,
 };
 
-if (service.isLoading === Loading.LOADING) {
+if (book.load === LoadingStatus.LOADING) {
   console.log("Loading...");
+}
+
+if (book.load === LoadingStatus.READY) {
+  console.log("Here is your book!");
 }
 
 // Сделайте переменную, которая может принимать или строку или число.
@@ -119,11 +129,9 @@ type pageType = {
   status: "open" | "close";
   details?: {
     createAt: Date;
-    updateAt: string;
+    updateAt: Date;
   };
 };
-
-const date = new Date("2021-01-01");
 
 const page1: pageType = {
   title: "The awesome page",
@@ -131,8 +139,8 @@ const page1: pageType = {
   accounts: ["Max", "Anton", "Nikita"],
   status: "open",
   details: {
-    createAt: date,
-    updateAt: "2021-05-01",
+    createAt: new Date("2021-01-01"),
+    updateAt: new Date("2021-05-01"),
   },
 };
 
