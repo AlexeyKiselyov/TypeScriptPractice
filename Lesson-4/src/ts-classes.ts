@@ -23,29 +23,33 @@
 
 abstract class House {
   protected door = false;
-  public key: Key;
-  protected tenants: object[] = [];
+  protected key: Key;
+  protected tenants: Person[] = [];
 
   constructor(key: Key) {
     this.key = key;
   }
 
-  public comeIn(person: Person) {
+  public comeIn(person: Person): void {
     if (this.door) {
       this.tenants.push(person);
       console.log('The owner is in the house!');
+      return;
     }
+    throw new Error('Door is close');
   }
 
   public abstract openDoor(key: Key): void;
 }
 
 class MyHouse extends House {
-  public openDoor(key: object): void {
-    if (this.key === key) {
+  public openDoor(key: Key): void {
+    if (key.getSignature() === this.key.getSignature()) {
       this.door = true;
-      console.log('The door in opening!');
+      console.log('The door is opening!');
+      return;
     }
+    throw new Error('Key to another door');
   }
 }
 
@@ -65,7 +69,7 @@ class Key {
 class Person {
   constructor(private key: Key) {}
 
-  public getKey() {
+  public getKey(): Key {
     return this.key;
   }
 }
