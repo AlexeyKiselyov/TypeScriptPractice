@@ -31,6 +31,7 @@ const student = new Student('Mark', 16, 506);
 // Создай экземпляр класса Student и вызови метод getInfo() для вывода информации о студенте.
 
 // -------->2nd task
+
 // 1. Создай интерфейс Course, который будет представлять информацию о курсе. Интерфейс должен содержать следующие поля:
 // - courseName (название курса)
 // - duration (продолжительность курса в неделях)
@@ -124,3 +125,75 @@ class PasswordGenerator implements IPasswordGenerator {
 
 const passwordGenerator = new PasswordGenerator();
 console.log(passwordGenerator.generatePassword());
+
+// --------->4th task
+
+type Student1 = {
+  name: string;
+  age: number;
+  grade: number;
+};
+
+function filterStudentsByGrade(
+  students: Student1[],
+  gradeThreshold: number
+): Student1[] {
+  return students.filter(student => student.grade > gradeThreshold);
+}
+
+// example
+const students: Array<Student1> = [
+  { name: 'Alice', age: 20, grade: 85 },
+  { name: 'Bob', age: 21, grade: 92 },
+  { name: 'Charlie', age: 19, grade: 78 },
+];
+
+const highPerformingStudents = filterStudentsByGrade(students, 80);
+console.log(highPerformingStudents);
+
+// --------->5th task
+
+const numbers: number[] = [1, 2, 3];
+const strings: string[] = ['a', 'b', 'c'];
+
+function mergeArrays(
+  numbers: number[],
+  strings: string[]
+): Array<number | string> {
+  return [...numbers, ...strings];
+}
+
+const mergedArray = mergeArrays(numbers, strings);
+console.log(mergedArray);
+
+// --------->6th task
+
+type StudentInfo = {
+  name: string;
+  examScore: number;
+  assignmentScores: number[];
+  averageScore?: number;
+};
+
+function calculateAverageScores(students: StudentInfo[]): StudentInfo[] {
+  return students.map(student => {
+    const avarageAssignment =
+      student.assignmentScores.reduce((acc, numb) => acc + numb, 0) /
+      student.assignmentScores.length;
+    const averageScore = Math.round(
+      (student.examScore + avarageAssignment) / 2
+    );
+    return { ...student, averageScore };
+  });
+}
+
+// example
+
+const students1: StudentInfo[] = [
+  { name: 'Alice', examScore: 85, assignmentScores: [90, 88, 92] },
+  { name: 'Bob', examScore: 92, assignmentScores: [95, 89, 88] },
+  { name: 'Charlie', examScore: 78, assignmentScores: [80, 85, 82] },
+];
+
+const studentsWithAverageScores = calculateAverageScores(students1);
+console.log(studentsWithAverageScores);
