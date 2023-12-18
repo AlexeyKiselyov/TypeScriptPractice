@@ -197,3 +197,47 @@ const students1: StudentInfo[] = [
 
 const studentsWithAverageScores = calculateAverageScores(students1);
 console.log(studentsWithAverageScores);
+
+// --------->7th task
+
+enum DayOfWeek {
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday,
+}
+
+function isWeekend(day: DayOfWeek): boolean {
+  if (day === DayOfWeek.Saturday || day === DayOfWeek.Sunday) return true;
+  return false;
+}
+
+const day: DayOfWeek = DayOfWeek.Saturday;
+const result = isWeekend(day);
+console.log(result); //true
+
+// --------->7th task
+
+class Point3D {
+  constructor(public x: number, public y: number, public z: number) {}
+
+  calculateDistance(otherPoint: Point3D): number {
+    const diffX = this.x - otherPoint.x;
+    const diffY = this.y - otherPoint.y;
+    const diffZ = this.z - otherPoint.z;
+
+    const result = Math.sqrt(diffX ** 2 + diffY ** 2 + diffZ ** 2);
+    return result;
+  }
+}
+
+// example
+
+const point1 = new Point3D(1, 2, 3);
+const point2 = new Point3D(4, 5, 6);
+
+const distance = point1.calculateDistance(point2);
+console.log(distance); // 5.196152422706632
