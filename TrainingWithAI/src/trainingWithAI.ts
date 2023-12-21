@@ -241,3 +241,62 @@ const point2 = new Point3D(4, 5, 6);
 
 const distance = point1.calculateDistance(point2);
 console.log(distance); // 5.196152422706632
+
+// --------->8th task
+
+interface Shape {
+  calculateArea(): number;
+}
+
+class Circle implements Shape {
+  constructor(public r: number) {}
+  calculateArea(): number {
+    return 3.14 * this.r ** 2;
+  }
+}
+
+class Rectangle implements Shape {
+  constructor(public a: number, public b: number) {}
+  calculateArea(): number {
+    return this.a * this.b;
+  }
+}
+
+const circle = new Circle(5);
+console.log(circle.calculateArea());
+
+const rectangle = new Rectangle(5, 5);
+console.log(rectangle.calculateArea());
+
+// --------->9th task
+
+class Stack<T> {
+  private items: T[] = [];
+
+  push(item: T): void {
+    this.items.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.items.pop();
+  }
+
+  peek(): T | undefined {
+    const lastItemInd = this.items.length - 1;
+    return this.items[lastItemInd];
+  }
+}
+
+const stackOfStrings = new Stack<string>();
+stackOfStrings.push('a');
+stackOfStrings.push('b');
+stackOfStrings.push('c');
+console.log(stackOfStrings.pop());
+console.log(stackOfStrings.peek());
+
+const stackOfNumbs = new Stack<number>();
+stackOfNumbs.push(1);
+stackOfNumbs.push(2);
+stackOfNumbs.push(3);
+console.log(stackOfNumbs.pop());
+console.log(stackOfNumbs.peek());
