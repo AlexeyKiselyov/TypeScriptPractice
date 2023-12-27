@@ -300,3 +300,56 @@ stackOfNumbs.push(2);
 stackOfNumbs.push(3);
 console.log(stackOfNumbs.pop());
 console.log(stackOfNumbs.peek());
+
+// --------->9th task
+
+function swap(a: string | number, b: string | number) {
+  if (typeof a === 'string' || typeof b === 'string') {
+    return `${b} ${a}`;
+  } else {
+    return String(b) + ' ' + String(a);
+  }
+}
+// //example
+const strA = 'Hello';
+const strB = 'World';
+
+console.log(swap(strA, strB)); // World Hello
+
+const numA = 42;
+const numB = 13;
+
+console.log(swap(numA, numB)); // 13 42
+
+// --------->10th task
+
+//// first option
+type UnaryFunction<T> = (arg: T) => T;
+
+function compose<T>(...functions: Array<UnaryFunction<T>>): UnaryFunction<T> {
+  return arg => functions.reduce((acc, func) => func(acc), arg);
+}
+
+const addTwo: UnaryFunction<number> = x => x + 2;
+const multiplyByThree: UnaryFunction<number> = x => x * 3;
+const subtractTen: UnaryFunction<number> = x => x - 10;
+
+const composedFunction = compose(addTwo, multiplyByThree, subtractTen);
+console.log(composedFunction(5)); // 11
+
+//// second option
+// let addTwo: (x: number) => number;
+// addTwo = x => x + 2;
+
+// let multiplyByThree: (x: number) => number;
+// multiplyByThree = x => x * 3;
+
+// let subtractTen: (x: number) => number;
+// subtractTen = x => x - 10;
+
+// function compose(arrOfFunctions: Array<Function>): Function {
+//   return (x: number): number =>
+//     arrOfFunctions.reduce((acc, func) => func(acc), x);
+// }
+// const composedFunction = compose([addTwo, multiplyByThree, subtractTen]);
+// console.log(composedFunction(5)); //11
