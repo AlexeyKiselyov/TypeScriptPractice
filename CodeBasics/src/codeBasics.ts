@@ -83,3 +83,65 @@ function authorize(user: User1 | null): boolean {
 
   return Company.isEmployeeEmail(email, companyDomain);
 }
+
+// --------->13th task
+function map(
+  arr: number[],
+  callback: (n: number, index: number) => number
+): number[] {
+  const result: number[] = [];
+  arr.forEach((numb, index) => {
+    result.push(callback(numb, index));
+  });
+  return result;
+}
+
+// --------->14th task
+
+function forEach(
+  arr: number[],
+  callback: (n: number, index: number) => void
+): void {
+  for (let i = 0; i < arr.length; i++) {
+    callback(arr[i], i);
+  }
+}
+
+// --------->15th task
+function fail1(message: string): never {
+  throw new Error(message);
+}
+
+function fail2(): never {
+  while (true) {
+    console.log('infinity loop');
+  }
+}
+
+// function fail3(code: number = 0): never {
+//   process.exit(code);
+// }
+
+// function fail4(): never {
+//   return exit(1);
+// }
+
+// --------->16th task
+function isPlainObject(value: unknown): boolean {
+  return value instanceof Object && !Array.isArray(value);
+}
+
+// --------->17th task ---> Destructurization
+
+type Course = {
+  lessons: string[];
+};
+
+function lessonsCount({ lessons }: Course): number {
+  return lessons.length;
+}
+
+// --------->18th task ---> Rest и Spread
+function max(num: number, ...numbers: number[]): number {
+  return Math.max(num, ...numbers);
+}
