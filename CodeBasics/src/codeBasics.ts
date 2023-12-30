@@ -145,3 +145,70 @@ function lessonsCount({ lessons }: Course): number {
 function max(num: number, ...numbers: number[]): number {
   return Math.max(num, ...numbers);
 }
+
+// --------->19th task ---> Function Overloads
+type NewYearCongratulate = {
+  (name: string): string;
+  (year: number, name: string): string;
+};
+
+const newYearCongratulate: NewYearCongratulate = (
+  data1: string | number,
+  data2?: string
+): string => {
+  if (data2) {
+    return `Hi ${data2}! Happy New Year ${data1}!`;
+  } else {
+    return `Hi ${data1}! Happy New Year!`;
+  }
+};
+
+// --------->20th task ---> Type Narrowing, Type Guard
+function last(value: string | number): string | number {
+  if (typeof value === 'number') {
+    return value % 10;
+  }
+
+  return value[value.length - 1] ?? '';
+}
+
+function isPresence(value: unknown): boolean {
+  if (value === null || value === undefined) {
+    return false;
+  }
+  // empty string
+  if (typeof value === 'string') {
+    if (value === '') {
+      return false;
+    }
+  }
+  // empty array
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return false;
+    }
+  }
+  // empty object
+  if (value instanceof Object) {
+    if (Object.keys(value).length === 0) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function foo(value: number | string) {
+  switch (typeof value) {
+    case 'number':
+      // ...
+      break;
+    case 'string':
+      // ...
+      break;
+  }
+}
+
+function isObject(value: unknown): value is object {
+  return typeof value === 'object' && value !== null;
+}

@@ -1,1 +1,1 @@
-# TypeScript training with AI
+# TypeScript training with CodeBasics
