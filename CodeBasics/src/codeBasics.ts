@@ -212,3 +212,76 @@ function foo(value: number | string) {
 function isObject(value: unknown): value is object {
   return typeof value === 'object' && value !== null;
 }
+
+// --------->21th task ---> Type Annotations
+// 1
+function unique(arr: (number | string)[]): (number | string)[] {
+  return [...new Set(arr)];
+}
+
+// 2
+type User2 = {
+  name: string;
+};
+
+const users: User2[] = [];
+
+function foo1(users: User2[]) {
+  return users;
+}
+
+// 3
+const users1: { name: string }[] = [];
+const users2: (string | null)[] = [];
+const users3: (User2 | null | { name: string })[] = [];
+
+// 4
+const users4: Array<User> = [];
+const users5: Array<number> = [];
+const users6: Array<User> = [];
+
+const users7: Array<{ name: string }> = [];
+const users8: Array<string | null> = [];
+
+// --------->22th task ---> Multidimensional Arrays
+
+// 1
+function getField(size: number): null[][] {
+  const field = Array<null>(size)
+    .fill(null)
+    .map(() => Array<null>(size).fill(null));
+  return field;
+}
+
+// 2
+const items1 = [
+  [3, 8],
+  [10, 4, 8],
+];
+
+const items2: number[][] = [];
+
+type User3 = {
+  name: string;
+};
+
+const users9: User3[][] = [[{ name: 'Eva' }, { name: 'Adam' }]];
+
+// 3
+const coll: (string | number)[][] = [];
+coll.push(['hexlet', 5]);
+
+// 4
+const coll1: Array<Array<string | number>> = [];
+coll1.push(['hexlet', 5]);
+
+// 5
+type Course1 = {
+  name: string;
+  lessons: Lesson[];
+};
+
+type Lesson = {
+  name: string;
+  links: string[];
+};
