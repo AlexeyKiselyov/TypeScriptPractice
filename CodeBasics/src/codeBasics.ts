@@ -246,10 +246,25 @@ const users8: Array<string | null> = [];
 // --------->22th task ---> Multidimensional Arrays
 
 // 1
+// first option
 function getField(size: number): null[][] {
   const field = Array<null>(size)
     .fill(null)
     .map(() => Array<null>(size).fill(null));
+  return field;
+}
+
+// second option
+function getField1(size: number): null[][] {
+  const field: null[][] = [];
+  for (let i = 0; i < size; i++) {
+    const row = [];
+    for (let j = 0; j < size; j++) {
+      row.push(null);
+    }
+    field.push(row);
+  }
+
   return field;
 }
 
@@ -285,3 +300,67 @@ type Lesson = {
   name: string;
   links: string[];
 };
+
+// --------->23th task ---> Readonly Arrays
+
+// first option
+function reverse(arr: ReadonlyArray<number>): Array<number> {
+  return arr.map((_, index) => arr[arr.length - 1 - index]);
+}
+
+// second option
+function reverse1(arr: readonly number[]): Array<number> {
+  const result: Array<number> = [];
+  arr.forEach(numb => result.unshift(numb));
+  return result;
+}
+
+// third option
+function reverse3(arr: ReadonlyArray<number>): Array<number> {
+  return arr.reduceRight((acc, numb) => {
+    acc.push(numb);
+    return acc;
+  }, [] as number[]);
+}
+
+// --------->24th task ---> Tuples (can push)
+
+type HTTPResponse = [number, string?]; //can be with optional param
+
+type Point = [number, number, number];
+
+function isTheSamePoint(point1: Point, point2: Point): boolean {
+  return point1.every((numb, ind) => numb === point2[ind]);
+}
+
+// --------->25th task ---> Types as a set
+
+type CustomType = null | undefined | number;
+
+// --------->26th task ---> Union Types
+
+// 1
+type AllowedToConcatenation = number | string | null | undefined | boolean;
+
+const concat = (
+  base: AllowedToConcatenation,
+  suffix: AllowedToConcatenation
+): string => `${base}${suffix}`;
+
+// 2
+function lastIndex(str: string, char: string): number | null {
+  const result = str.lastIndexOf(char);
+  return result < 0 ? null : result;
+}
+
+// --------->27th task ---> Null and Undefined
+
+function formatPrice(price?: number | null): string {
+  if (price === undefined || price === null) {
+    return '$0.00';
+  }
+
+  return `$${price.toFixed(2)}`;
+}
+
+// --------->28th task ---> Literal Types
