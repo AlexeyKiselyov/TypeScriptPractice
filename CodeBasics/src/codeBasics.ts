@@ -364,3 +364,69 @@ function formatPrice(price?: number | null): string {
 }
 
 // --------->28th task ---> Literal Types
+
+type Hexlet = 'hexlet';
+type One = 1;
+type False = false;
+type BigN = 100n;
+
+// Literal Types Union
+
+type OrderStatus = 'Created' | 'Paid' | 'Shipped' | 'Delivered';
+
+type NumberFalse = number | false;
+
+// String enums
+
+enum OrderStatus1 {
+  Created = 'Created',
+  Paid = 'Paid',
+  Shipped = 'Shipped',
+  Delivered = 'Delivered',
+}
+
+// Literal Object
+
+type DataSourceOption = {
+  type: 'postgre' | 'mysql';
+  host: string;
+  port: number;
+};
+
+// Literary reduction
+
+const ormConfig = {
+  type: 'mysql',
+  host: 'localhost',
+  port: 5432,
+} as const;
+
+const str = 'test' as const;
+type Str = typeof str; // 'test'
+
+// Example
+type Turtle = 'turtle' | null;
+
+type Game = {
+  makeTurn: (direction: 'left' | 'right') => void;
+  state: Array<Turtle>;
+};
+
+const startGame = (): Game => {
+  const state: Array<Turtle> = ['turtle', null, null, null, null];
+  const stateLength = 4;
+
+  const makeTurn = (direction: 'left' | 'right'): void => {
+    const turtleIndex = state.indexOf('turtle');
+    const nextIndex = direction === 'left' ? turtleIndex - 1 : turtleIndex + 1;
+
+    if (nextIndex < 0 || nextIndex > stateLength) {
+      throw new Error('Out of bounds');
+    }
+
+    state[turtleIndex] = null;
+    state[nextIndex] = 'turtle';
+  };
+
+  return { makeTurn, state };
+};
