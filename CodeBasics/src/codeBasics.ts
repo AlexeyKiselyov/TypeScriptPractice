@@ -430,3 +430,25 @@ const startGame = (): Game => {
 
   return { makeTurn, state };
 };
+
+// --------->29th task ---> Intersections Types
+enum Permission {
+  READ,
+  WRITE,
+  DELETE,
+}
+
+type User4 = {
+  login: string;
+};
+
+type AdminPermission = {
+  permission: Permission;
+};
+
+type Admin = User4 & AdminPermission;
+
+const addAdmin = (user: User4): Admin => ({
+  ...user,
+  permission: Permission.READ,
+});
