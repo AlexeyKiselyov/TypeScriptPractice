@@ -452,3 +452,155 @@ const addAdmin = (user: User4): Admin => ({
   ...user,
   permission: Permission.READ,
 });
+
+// --------->30th task ---> Assignability //can be  Error: Type X is not assignable to type Y..
+
+type Form = {
+  age: {
+    value: number;
+    validator: (val: number) => boolean;
+  };
+  name: {
+    value: string;
+    validator: (val: string) => boolean;
+  };
+};
+
+const form: Form = {
+  name: {
+    value: 'Mark',
+    validator: (val: string) => val.length > 1,
+  },
+  age: {
+    value: 16,
+    validator: (val: number) => val > 18,
+  },
+};
+
+// --------->31th task --->Type hierarchy
+
+// Types as subsets
+type ComparatorCallback = (
+  item1: number,
+  item2: number,
+  index: number
+) => -1 | 0 | 1;
+declare function sort(
+  arr: Array<number>,
+  callback: ComparatorCallback
+): Array<number>;
+
+const arr = [1, 2, 3];
+const comparator = (item1: number, item2: number) => Math.sign(item1 - item2);
+
+// sort(arr, comparator); // Error: Type 'number' is not assignable to type '0 | 1 | -1'.
+
+// Literary types
+let num: number = 1;
+const two: 2 = 2;
+const notTrue: false = false;
+
+num = two;
+// num = notTrue; // Type 'boolean' is not assignable to type 'number'.
+
+// unknown
+// 1
+let unknownValue: unknown = 1;
+
+unknownValue = 2; // OK
+unknownValue = false; // OK
+unknownValue = 'string'; // OK
+
+// 2
+let unknownValue1: unknown;
+
+unknownValue = 'string';
+// unknownValue1toUpperCase(); // Error: Property 'toUpperCase' does not exist on type 'unknown'.
+
+type UnionWithUnknown = unknown | number | boolean; //type will be unknown
+
+// never
+let neverValue: never;
+const two1: 2 = 2;
+
+// neverValue = two1; // Type 'number' is not assignable to type 'never'
+
+// multiple types
+type NumberUnion = -2 | -1 | 1 | 2;
+
+const one: NumberUnion = 1;
+const num1: number = one;
+
+type StringUnion = 'a' | 'b' | 'c' | 'd';
+
+const aChar: StringUnion = 'a';
+const str1: string = aChar;
+
+// Typing
+// 1
+let num2 = 1; // Неявное восходящее приведение
+let one2: number = 1; // Явное восходящее приведение
+
+let two2 = num2 as 2; // Явное нисходящее приведение
+
+let three2 = 3 as const; // Приведение к литеральному типу — нисходящее
+
+// 2
+const args = [8, 5]; // args: number[]
+// const angle = Math.atan2(...args); // error! A spread argument must either have a tuple type or be passed to a rest parameter.
+// console.log(angle);
+
+const args1 = [8, 5] as const; // readonly [8, 5]
+const angle = Math.atan2(...args1); // okay
+console.log(angle);
+
+// example
+type User5 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type Friends = [number, number];
+
+export type UserResponse = {
+  users: User5[];
+  friends: Friends[];
+};
+
+// first option
+function getUserFriends(userJson: string, userId: number): User5[] {
+  const userData: UserResponse = JSON.parse(userJson);
+
+  const friends = userData.friends.reduce((acc, item) => {
+    const [id1, id2] = item as Friends;
+    if (id1 === userId || id2 === userId) {
+      const friendId = id1 === userId ? id2 : id1;
+      const userFriend = userData.users.filter(({ id }) => friendId === id);
+      if (userFriend.length > 0) {
+        acc = [...acc, ...userFriend];
+      }
+    }
+    return acc;
+  }, [] as User5[]);
+
+  return friends;
+}
+
+// second option
+const defaultUser = { id: 0, name: '', age: 0 };
+const getUserFriends1 = (userResponseJSON: string, userId: number): User5[] => {
+  const userResponse = JSON.parse(userResponseJSON) as UserResponse;
+
+  return userResponse.friends
+    .map(([ownerId, friendId]: Friends): User5 => {
+      if (!(userId === ownerId || userId === friendId)) return defaultUser;
+      const searchId = ownerId === userId ? friendId : ownerId;
+      const friend: User5 | undefined = userResponse.users.find(
+        ({ id }) => id === searchId
+      );
+
+      return friend === undefined ? defaultUser : friend;
+    })
+    .filter((user: User5) => user.id > 0);
+};
