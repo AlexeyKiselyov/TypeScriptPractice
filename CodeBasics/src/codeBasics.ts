@@ -604,3 +604,73 @@ const getUserFriends1 = (userResponseJSON: string, userId: number): User5[] => {
     })
     .filter((user: User5) => user.id > 0);
 };
+
+// --------->32th task --->Structural typing
+type IntersectionUser = {
+  username: string;
+  password: string;
+} & {
+  type: string;
+};
+
+const admin: IntersectionUser = {
+  // требуется совпадение c объектным типом и слева и справа от оператора &
+  username: 'test',
+  password: 'test',
+  type: 'admin',
+};
+
+type UnionUser =
+  | {
+      username: string;
+      password: string;
+    }
+  | {
+      type: string;
+    };
+
+const user: UnionUser = { username: 'test', type: 'user' }; // достаточно совпадения с одним из объектных типов
+
+// example
+enum LoadingStatus {
+  Loading = 'Loading',
+  Error = 'Error',
+  Success = 'Success',
+}
+type DataState =
+  | {
+      status: LoadingStatus.Loading;
+    }
+  | {
+      status: LoadingStatus.Error;
+      error: Error;
+    }
+  | {
+      status: LoadingStatus.Success;
+      data: number;
+    };
+
+function handleData(dataState: DataState): string {
+  if (dataState.status === LoadingStatus.Loading) {
+    return 'loading...';
+  }
+  if (dataState.status === LoadingStatus.Error) {
+    return dataState.error.message;
+  }
+  if (dataState.status === LoadingStatus.Success) {
+    return String(dataState.data);
+  }
+  return 'unknown';
+}
+
+const loading: DataState = { status: LoadingStatus.Loading };
+console.log(handleData(loading)); // loading...
+
+const error: DataState = {
+  status: LoadingStatus.Error,
+  error: new Error('error'),
+};
+console.log(handleData(error)); // error
+
+const success: DataState = { status: LoadingStatus.Success, data: 42 };
+console.log(handleData(success)); // '42'
