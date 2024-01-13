@@ -674,3 +674,79 @@ console.log(handleData(error)); // error
 
 const success: DataState = { status: LoadingStatus.Success, data: 42 };
 console.log(handleData(success)); // '42'
+
+// --------->33th task --->Covariance and Contravariant
+
+// --->First example
+type ComparatorCallback1 = (item1: number, item2: number) => -1 | 0 | 1;
+declare function sort(
+  arr: Array<number>,
+  callback: ComparatorCallback1
+): Array<number>;
+
+const arr1 = [1, 2, 3];
+// 1st comparator variant with Error
+const comparator1 = (item1: number, item2: number) => Math.sign(item1 - item2); // make error, because result of Math not '-1 | 0 | 1' => (item1: number, item2: number) => number;
+
+//sort(arr, comparator1); // Error: Type 'number' is not assignable to type '0 | 1 | -1'.
+
+// 2nd comparator variant withour Error
+const comparator2 = (item1: number, item2: number) => {
+  // (item1: number, item2: number) => -1 | 0 | 1;
+  if (item1 === item2) {
+    return 0;
+  }
+
+  return item1 > item2 ? 1 : -1;
+};
+
+// ---->Second example
+type Formatter = (val: string) => string;
+
+const formatToConcrete: Formatter = (): 'test' => 'test';
+//const formatToNumber: Formatter = (val: '1') => val; // Error!
+
+// ---->Practic
+type Transaction = {
+  apply: (amount: number) => number;
+};
+
+type Wallet = {
+  transactions: Array<Transaction>;
+  balance: number;
+};
+
+function applyTransactions(wallet: Wallet): number {
+  try {
+    let balance: number = wallet.balance;
+
+    wallet.transactions.forEach(({ apply }) => {
+      balance = apply(balance);
+    });
+
+    return balance;
+  } catch (error) {
+    return wallet.balance;
+  }
+}
+
+// --------->34/35th tasks --->Classes
+
+type CustomSize = {
+  name: string;
+  size: number;
+};
+
+class CustomFile {
+  name: string;
+  size: number;
+
+  constructor({ name, size }: CustomSize) {
+    this.name = name;
+    this.size = size;
+  }
+
+  toString(): string {
+    return `${this.name} (${this.size} bytes)`;
+  }
+}
