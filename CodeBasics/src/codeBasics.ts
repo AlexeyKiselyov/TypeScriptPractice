@@ -730,7 +730,7 @@ function applyTransactions(wallet: Wallet): number {
   }
 }
 
-// --------->34/35th tasks --->Classes
+// --------->34 tasks ---> Classes
 
 type CustomSize = {
   name: string;
@@ -750,3 +750,54 @@ class CustomFile {
     return `${this.name} (${this.size} bytes)`;
   }
 }
+
+// --------->35 tasks ---> Classes as types
+
+class Point1 {
+  private x: number;
+
+  private y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  isEqual(p2: Point1): boolean {
+    return this.x === p2.x && this.y === p2.y;
+  }
+}
+
+const point = new Point1(1, 2);
+point.isEqual(new Point1(10, 1)); // OK
+//point.isEqual({ x: 1, y: 2}); // Error: Argument of type '{ x: number; y: number; }' is not assignable to parameter of type 'Point'.
+
+// practic
+class CustomFile1 {
+  name: string;
+  size: number;
+  isCopy: boolean;
+
+  constructor(option: { name: string; size: number }) {
+    this.name = option.name;
+    this.size = option.size;
+    this.isCopy = option instanceof CustomFile;
+  }
+
+  toString() {
+    if (this.isCopy) {
+      return `(copy) ${this.name} (${this.size} bytes)`;
+    } else {
+      return `${this.name} (${this.size} bytes)`;
+    }
+  }
+}
+
+const file = new CustomFile1({ name: 'open-world.jpeg', size: 1000 });
+console.log(file.toString()); // open-world.jpeg (1000 bytes)
+
+const file2 = new CustomFile1(file);
+console.log(file2.toString()); // (copy) open-world.jpeg (1000 bytes)
+
+const file3 = new CustomFile1(file2);
+console.log(file2.toString()); // (copy) open-world.jpeg (1000 bytes)
