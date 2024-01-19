@@ -801,3 +801,91 @@ console.log(file2.toString()); // (copy) open-world.jpeg (1000 bytes)
 
 const file3 = new CustomFile1(file2);
 console.log(file2.toString()); // (copy) open-world.jpeg (1000 bytes)
+
+// --------->36 tasks ---> Property and Method Protection
+
+// private => only accessible within class
+class PointPrivate {
+  private x: number;
+
+  private y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+const p = new PointPrivate(10, 8);
+//p.x; // Property 'x' is private and only accessible within class 'Point'.
+//p.y; // Property 'y' is private and only accessible within class 'Point'.
+
+// protected => only accessible within class and its subclasses
+class PointProtected {
+  protected x: number;
+
+  protected y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class Point3D extends PointProtected {
+  protected z: number;
+
+  constructor(x: number, y: number, z: number) {
+    super(x, y);
+    this.z = z;
+  }
+
+  public getCoordinates() {
+    return [this.x, this.y, this.z]; // OK
+  }
+}
+
+const pointProtected = new Point3D(10, 8, 5);
+//pointProtected.x; // Property 'x' is protected and only accessible within class 'Point' and its subclasses.
+//pointProtected.y; // Property 'y' is protected and only accessible within class 'Point' and its subclasses.
+//pointProtected.z; // Property 'z' is protected and only accessible within class 'Point3D' and its subclasses.
+
+// exercise
+
+type CustomFileOptions = {
+  name: string;
+  size: number;
+};
+
+class CustomFile2 {
+  private name: string;
+
+  private size: number;
+
+  constructor(options: CustomFileOptions) {
+    this.name = options.name;
+    this.size = options.size;
+  }
+
+  protected toString() {
+    return `${this.name} (${this.size} bytes)`;
+  }
+}
+
+// BEGIN (write your solution here)
+class ImageCustomFile extends CustomFile2 {
+  private width: number;
+
+  private height: number;
+
+  constructor(options: CustomFileOptions & { width: number; height: number }) {
+    super(options);
+    this.width = options.width;
+    this.height = options.height;
+  }
+
+  toString() {
+    return `${super.toString()} ${this.width}x${this.height}`;
+  }
+}
+// END
