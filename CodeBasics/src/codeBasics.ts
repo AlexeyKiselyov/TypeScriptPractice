@@ -872,7 +872,6 @@ class CustomFile2 {
   }
 }
 
-// BEGIN (write your solution here)
 class ImageCustomFile extends CustomFile2 {
   private width: number;
 
@@ -888,4 +887,56 @@ class ImageCustomFile extends CustomFile2 {
     return `${super.toString()} ${this.width}x${this.height}`;
   }
 }
-// END
+
+// --------->37 tasks ---> Options Properties
+
+class CustomFile3 {
+  constructor(public name: string, private size: number) {}
+
+  toString() {
+    return `${this.name} (${this.size} bytes)`;
+  }
+}
+
+// --------->38 tasks ---> Inheritance
+
+// 1
+class CustomFile4 {
+  constructor(public name: string, public size: number) {}
+}
+
+class ImageCustomFile2 extends CustomFile4 {
+  constructor(
+    name: string,
+    size: number,
+    public width: number,
+    public height: number
+  ) {
+    super(name, size);
+  }
+}
+
+// example
+class HttpError extends Error {
+  constructor(public status: number, message: string) {
+    super(message);
+  }
+}
+
+class NotFoundError extends HttpError {
+  constructor(message: string) {
+    super(404, message);
+  }
+}
+
+class UnauthorizedError extends HttpError {
+  constructor(message: string) {
+    super(401, message);
+  }
+}
+
+class ForbiddenError extends HttpError {
+  constructor(message: string) {
+    super(403, message);
+  }
+}
