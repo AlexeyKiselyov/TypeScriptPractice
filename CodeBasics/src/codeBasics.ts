@@ -1131,3 +1131,119 @@ class Car implements IVehicle {
 }
 
 // ---------> 42 tasks ---> Use of interfaces
+
+// Если интерфейс необходимо расширить дополнительными полями после его инициализации, мы можем повторно объявить интерфейс с новыми свойствами. Такой способ называется слиянием деклараций:
+
+interface IUser {
+  rating: number;
+}
+
+interface IUser {
+  nickname: string;
+  birthdate: number;
+}
+
+const sergey: IUser = {
+  nickname: 'Sergey',
+  birthdate: 1990,
+  rating: 1102,
+};
+
+// Мы можем расширить интерфейс с помощью создания другого интерфейса, который наследуется от него:
+
+interface IStudent extends IUser {
+  group: number;
+}
+
+const andrey: IStudent = {
+  nickname: 'Andrey',
+  birthdate: 1990,
+  rating: 1102,
+  group: 2,
+};
+
+// Еще интерфейсы могут расширять сразу несколько других интерфейсов:
+interface IUser1 {
+  nickname: string;
+  rating: number;
+}
+
+interface IEditor {
+  courses: [string];
+  canEdit: boolean;
+}
+
+interface IAuthor extends IUser1, IEditor {
+  team: string;
+}
+
+const ivan: IAuthor = {
+  nickname: 'Ivan',
+  rating: 20,
+  courses: ['typescript'],
+  canEdit: true,
+  team: 'College',
+};
+
+// Также TypeScript позволяет нам создавать перекрестные типы (intersection types) из нескольких интерфейсов c помощью литерала &:
+
+interface IOneWay {
+  one: string;
+}
+
+interface IOrAnother {
+  another: string;
+}
+
+type OneWayOrAnother = IOneWay & IOrAnother;
+
+const example: OneWayOrAnother = {
+  one: 'A',
+  another: 'B',
+};
+
+// Может случиться так, что мы не знаем заранее всех свойств, которые будут содержаться в нашем интерфейсе. Но нам известно их возможное содержание. В таком случае удобно использовать специальную индексную сигнатуру, которая позволяет описать типы возможных значений:
+
+interface IPhoneBook {
+  [index: string]: number;
+}
+
+const myNotePad: IPhoneBook = {
+  ivan: 55531311,
+  sergey: 55500110,
+  mom: 55522111,
+};
+
+// training
+
+interface IFlying {
+  canFly: true;
+}
+
+interface IBird extends IFlying {
+  isLiving: true;
+}
+
+interface IPlane extends IFlying {
+  canCarryPeople: true;
+}
+
+interface ISuperMan extends IBird, IPlane {
+  guessWho: (value: string) => string;
+}
+
+const superMan: ISuperMan = {
+  canFly: true,
+  isLiving: true,
+  canCarryPeople: true,
+
+  guessWho: (value: string) => {
+    if (value.toLowerCase() === 'superman') {
+      return `It's a ${value}!`;
+    } else {
+      return `It's a ${value}?`;
+    }
+  },
+};
+
+// ---------> 43 tasks ---> Realization of interfaces by classess
