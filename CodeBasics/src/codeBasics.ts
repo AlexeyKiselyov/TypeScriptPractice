@@ -1247,3 +1247,125 @@ const superMan: ISuperMan = {
 };
 
 // ---------> 43 tasks ---> Realization of interfaces by classess
+
+// => Интерфейсы могут быть расширены классами:
+interface IBeep {
+  sayBeep: () => string;
+}
+
+interface IBoop {
+  sayBoop: () => string;
+}
+
+class Robo implements IBeep, IBoop {
+  sayBeep = () => 'beep';
+
+  sayBoop = () => 'boop';
+}
+
+const R2D2 = new Robo();
+R2D2.sayBeep(); // 'beep'
+
+// => Создание класса на основе интерфейса не ведет к точной реализации этого интерфейса в классе. TypeScript просто проверяет, удовлетворяют ли свойства и методы нашего класса свойствам, заявленным в интерфейсе. Сам же класс мы пишем вручную.
+
+interface ICalculate {
+  sum: (num1: number, num2: number) => number;
+}
+
+class Summator implements ICalculate {
+  sum(num1: number, num2: number) {
+    return num1 + num2;
+  }
+
+  // Если метод будет записан так:
+  // sum(num1, num2) {
+  //   return num1 + num2;
+  // }
+  // Для параметров будет выведено сообщение: Parameter 'num1'/'num2' implicitly has an 'any' type,
+  // потому что TypeScript только проверяет класс на соответствие интерфейсу, но не наследуется от него полноценно
+
+  multiply(num1: number, num2: number) {
+    return num1 * num2;
+  }
+  // Мы добавили новый метод, но TypeScript не ругается
+}
+
+let calculator = new Summator();
+// Наш код сработает, как если бы он сработал для аргументов с типом any,
+// потому что типы параметров, равно как и все остальное, не были унаследованы классом при реализации интерфейса
+calculator.sum(2, 3); // 5
+
+// => Ошибка в реализации интерфейса классом возможна только тогда, когда мы не реализуем одно из свойств, указанных в интерфейсе. Или мы реализуем его не так, как указано в интерфейсе:
+
+interface ICalculate1 {
+  sum: (num1: number, num2: number) => number;
+}
+
+class Summator1 implements ICalculate1 {
+  sum(num1: number, num2: number) {
+    return num1 + num2;
+  }
+
+  // Если метод будет в с такими типами параметров:
+
+  // sum(num1: string, num2: string) {
+  //   return num1 + num2;
+  // }
+
+  // Мы изменили типы аргументов на string, то есть неверно реализовали интерфейс
+  // В таком случае TypeScript обратит внимание на нашу ошибку и не скомпилируется:
+  // Type '(num1: string, num2: string) => string' is not assignable to type '(num1: number, num2: number) => number'.
+}
+
+// => Если мы пишем класс, реализующий интерфейс с опциональными свойствами, нам нужно прописывать все самостоятельно. В противном случае эти свойства не попадут в наш класс:
+
+interface ICalculate2 {
+  sum: (num1: number, num2: number) => number;
+  multiply?: (num1: number, num2: number) => number;
+}
+
+class Summator2 implements ICalculate2 {
+  sum(num1: number, num2: number) {
+    return num1 + num2;
+  }
+}
+
+const calculator2 = new Summator2();
+calculator2.sum(2, 3); // 5
+// calculator2.multiply(2, 3); // Property 'multiply' does not exist on type 'Summator'.
+
+// Выводы:
+// Поскольку в TypeScript для одних и тех же вещей существует несколько разных инструментов, мы можем реализовывать классы с помощью расширения абстрактных классов вместо интерфейсов. Но выбор будет зависеть от задачи. Абстрактные классы предоставляют нам модификаторы доступа и конструкторы, в то время как интерфейсы более легковесны и просты.
+
+//Задание:
+// С помощью предоставленного интерфейса IPhonebook и типа Entry реализуйте класс Phonebook, который представляет телефонный справочник со следующими свойствами:
+
+// entries — база данных, объект, записи в котором представляют собой имена в качестве ключей и телефоны в качестве значений. Свойство должно быть неизменяемым и доступным только для чтения
+// get — метод, возвращающий телефон по имени
+// set — метод, записывающий имя и телефон в справочник
+// Примеры:
+// typescript
+// const myNote = new Phonebook();
+// myNote.set('help', 911);
+// myNote.get('help'); // 911
+
+type Entry = {
+  [key: string]: number;
+};
+
+interface IPhonebook {
+  get(key: string): number | null;
+  set(key: string, value: number): void;
+}
+
+class Phonebook implements IPhonebook {
+  private readonly entries: Entry = {};
+
+  get(key: string): number | null {
+    return this.entries[key] || null;
+  }
+
+  set(key: string, value: number): void {
+    this.entries[key] = value;
+  }
+}
