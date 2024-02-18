@@ -1648,3 +1648,64 @@ type MyMap<K, V> = {
 };
 
 // ---------> 48 tasks ---> Asynchronous functions
+
+// Promise стали самым популярным способом работы с асинхронным кодом в JavaScript. Они позволяют избежать callback hell, а также упрощают работу с асинхронными функциями. TypeScript также поддерживает привычный синтаксис для работы с Promise в виде async/await и типизацию.
+
+const promise = new Promise<number>((resolve, reject) => {
+  setTimeout(() => {
+    resolve(42);
+  }, 1000);
+});
+
+// Promise представляет собой дженерик с типом, который будет возвращен в случае успешного выполнения. В примере выше это тип number.
+
+// Чтобы продолжать работать в одном стиле с функциями, которые принимают callback, мы можем промисифцировать их. Для этого нам нужно обернуть функцию в Promise:
+
+const wait = (ms: number): Promise<number> => {
+  return new Promise(resolve => {
+    const timer = setTimeout(() => {
+      resolve(ms);
+    }, ms);
+  });
+};
+
+// Мы можем и не описывать тип возвращаемого значения, так как TypeScript сможет его вывести из типа, который мы передаем в Promise. К тому же из функции, которая помечена как async, Promise возвращается автоматически, и тип возвращаемого значения будет обернут в Promise:
+
+const getHours = async () => {
+  return new Date().getHours();
+};
+
+const hoursPromise: Promise<number> = getHours();
+
+// Так как Promise, как и контейнер, заворачивает значения внутри себя, мы можем использовать await для получения значения из него:
+
+const hours = await getHours();
+
+// В TypeScript await используется так же, как в JavaScript.
+
+// Promise вместе с async/await позволяют писать асинхронный код в синхронном стиле и сильно упрощают работу с асинхронным кодом. TypeScript поддерживает этот синтаксис и с помощью дженериков позволяет нам использовать его со всей мощью типизации.
+
+// Задание
+// Реализуйте асинхронный вариант функции map() - asyncMap(). Первым аргументом asyncMap() принимает массив с Promise. Вторым — функцию, которая применяется к каждому элементу. Функция должна вернуть массив с результатами выполнения функции для каждого элемента:
+
+const asyncMap = async <T, P>(
+  arr: Promise<T>[],
+  fn: (item: T, index: number) => P
+) => {
+  const promises = arr.map(async (item, index) => {
+    const result = await item;
+    return fn(result, index);
+  });
+
+  return Promise.all(promises);
+};
+
+const promisedNumbers = [
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+];
+
+asyncMap(promisedNumbers, (num, index) => num * index).then(result => {
+  console.log(result); // [0, 2, 6]
+});
