@@ -1786,3 +1786,92 @@ const queue = new Queue<number>();
 queue.enqueue(1);
 queue.dequeue(); // 1
 queue.dequeue(); // Error: Queue is empty
+
+// ---------> 50 tasks ---> Type Object
+
+// Иногда нам нужно ограничить входной параметр функции типом «любой объект». Например, это нужно для функции, которая проверяет наличие ключей в объекте. Существует несколько способов сделать такую проверку, но не все из них работают как ожидается.
+
+// Посмотрим на пример:
+
+// В качестве типа используется {}
+function toString(obj: {}) {
+  return obj.toString();
+}
+
+toString('wow'); // Ok!
+toString(123); // Ok!
+toString({}); // Ok!
+
+// Пустой объектный тип {} подразумевает под собой объект любой структуры и ограничивает множество всех значений за исключением null и undefined. Пустой интерфейс работает так же, как и пустой объектный тип. Это не то, что мы ожидали.
+
+// Тип Object — это тип объекта. Он работает так же, как тип {} с некоторыми отличиями. Он предопределяет типы некоторых встроенных методов, например, toString(), а тип {} этого не делает. Например:
+
+const foo2: {} = {
+  toString() {
+    return 1; // Ok!
+  },
+};
+
+const bar2: Object = {
+  // toString() {
+  //   return 1; // Error!
+  // },
+};
+
+// Второе определение bar не работает, потому что тип Object указывает на то, что метод toString() должен возвращать строку.
+
+// Если мы хотим работать с непримитивными значениями, то для этого существует еще один тип object (с маленькой буквы):
+
+function toString1(obj: object) {
+  return obj.toString();
+}
+
+// toString1('wow'); // Error!
+// toString1(123); // Error!
+toString1({}); // Ok!
+
+// С помощью типа object нельзя получить доступ к свойствам объекта. Для такой задачи используются уже другие механизмы.
+
+// Задание
+// Реализуйте функцию extract(object, keys), которая возвращает новый объект c указанными ключами.
+
+// 1st option
+const extract = (obj: object, keys: Array<string>): object => {
+  const entries = Object.entries(obj).filter(([key]) => keys.includes(key));
+
+  return Object.fromEntries(entries);
+};
+
+const user1 = {
+  name: 'Tirion',
+  email: 'tirion@lanister.got',
+  age: 35,
+};
+
+extract(user1, ['name', 'age']); // { name: 'Tirion', age: 35 }
+
+// 2nd option
+
+type ObjectType = {
+  [key: string]: any;
+};
+
+function extract1(object: ObjectType, keys: Array<string>): ObjectType {
+  const newObject: ObjectType = {};
+
+  keys.forEach(key => {
+    if (object.hasOwnProperty(key)) {
+      newObject[key] = object[key];
+    }
+  });
+
+  return newObject;
+}
+
+const user2 = {
+  name: 'Tirion',
+  email: 'tirion@lanister.got',
+  age: 35,
+};
+
+extract1(user2, ['name', 'age']); // { name: 'Tirion', age: 35 }
